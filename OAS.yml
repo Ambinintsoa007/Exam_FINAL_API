@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: STD24214
+  version: 1.O.0
+servers:
+  - url: http://localhost:8000
+components:
+  schemas:
+    Characteristics:
+      type: object
+      properties:
+        max_speed:
+          type: number
+        max_fuel:
+          type: number
+    Cars:
+      type: object
+      properties:
+        identifier:
+          type: string
+        brand:
+          type: string
+        model:
+          type: string
+        characteristics:
+          items:
+            $ref: '#/components/schemas/Characteristics'
+
+paths:
+  /ping:
+    get:
+      responses:
+        '200':
+          description: succès
+          content:
+            text/plain:
+              schema:
+                example:
+                  type: string
+                  example: pong
+
+  /cars:
+    post:
+      description: de créer une liste d’objet JSON
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Cars'
+      responses:
+        '201':
+          description: liste créer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cars'
+
+    get:
+      responses:
+        '200':
+          description: liste des voitures obtenues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cars'
